@@ -56,7 +56,7 @@ public class CustomSecurityConfig {
 
         //로그인 후, 성공시 리다이렉트 될 페이지 지정, 간단한 버전.
         http.formLogin(formLogin ->
-                formLogin.defaultSuccessUrl("/board/list",true)
+                formLogin.defaultSuccessUrl("/itpetshelter/index",true)
         );
 
         // 기본은 csrf 설정이 on, 작업시에는 끄고 작업하기.

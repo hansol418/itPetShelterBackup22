@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -64,6 +65,56 @@ public class ConsumerServiceImpl implements ConsumerService {
 
     }
 
+
+    // 일반회원 정보 수정.
+    @Override
+    public void update(ConsumerJoinDTO consumerJoinDTO) throws CidExistException {
+
+        log.info("consumerJoinDTO = 4 ConsumerServiceImpl 프로필 이미지 있는 경우  " + consumerJoinDTO);
+        Consumer consumer = null;
+        if(consumerJoinDTO.getUuid() == null) {
+            // 기존 이미지 재사용.
+            log.info("consumerJoinDTO = 4-2 ConsumerServiceImpl 기존 이미지 재사용  " + consumerJoinDTO);
+            Optional<Consumer> result = consumerRepository.findById(consumerJoinDTO.getCid());
+            Consumer oldConsumer = result.orElseThrow();
+            consumerJoinDTO.setUuid(oldConsumer.getUuid());
+            consumerJoinDTO.setFileName(oldConsumer.getFileName());
+            log.info("consumerJoinDTO = 5 ConsumerServiceImpl 기존 이미지 재사용  " + consumerJoinDTO);
+            consumer = dtoToEntity(consumerJoinDTO);
+            log.info("consumerJoinDTO = 6 ConsumerServiceImpl 기존 이미지 재사용 consumer " + consumer);
+            //패스워드는 현재 평문 -> 암호로 변경.
+            consumer.changePassword(passwordEncoder.encode(consumer.getCpw()));
+            // 역할 추가. 기본 USER
+            consumer.addRole(MemberRole.USER);
+
+
+            // 데이터 가 잘 알맞게 변경이 됐는지 여부,
+            log.info("updateMember: " + consumer);
+            log.info("updateMember: " + consumer.getRoleSet());
+
+            // 디비에 적용하기. -> 수정하기.
+            consumerRepository.save(consumer);
+        }
+        else {
+            //새로운 이미지가 들어오는 경우
+            consumer = dtoToEntity(consumerJoinDTO);
+            log.info("consumerJoinDTO = 8 ConsumerServiceImpl 새로운 이미지가 들어오는 경우 consumer " + consumer);
+            //패스워드는 현재 평문 -> 암호로 변경.
+            consumer.changePassword(passwordEncoder.encode(consumer.getCpw()));
+            // 역할 추가. 기본 USER
+            consumer.addRole(MemberRole.USER);
+
+
+            // 데이터 가 잘 알맞게 변경이 됐는지 여부,
+            log.info("updateMember: " + consumer);
+            log.info("updateMember: " + consumer.getRoleSet());
+
+            // 디비에 적용하기. -> 수정하기.
+            consumerRepository.save(consumer);
+        }
+
+
+    }
 
 
 

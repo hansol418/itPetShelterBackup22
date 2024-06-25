@@ -15,7 +15,7 @@ public interface ConsumerRepository extends JpaRepository<Consumer, String> {
     // 소셜 로그인이 아닌, 일반 로그인으로 검색하기.
     // N+1,한번에 다같이 조회를 하자. in 연산자 이용해서, 하나의 쿼리로 동작하기.
     @EntityGraph(attributePaths = "roleSet")
-    @Query("select m from Consumer c where c.Cid = :mid and c.social = false ")
+    @Query("select c from Consumer c where c.Cid = :Cid and c.social = false ")
     Optional<Consumer> getWithRoles(String Cid);
 
     // 이메일으로 유저 확인.

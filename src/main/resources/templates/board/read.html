@@ -92,6 +92,7 @@
 
                 </div>
                 <button class="btn btn-info addReplyBtn2">댓글 작성</button>
+                <button class="btn btn-info testBtn3">댓글 작성3</button>
                 <!--                첨부 이미지 표시하기, 원본 이미지 -->
                 <div class="col">
                     <div class="card" th:if="${boardDTO.fileNames != null && boardDTO.fileNames.size()>0}">
@@ -153,7 +154,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary closeRegisterBtn" data-bs-dismiss="modal">Close
                     </button>
-                    <button type="button" class="btn btn-primary registerBtn">댓글 추가하기</button>
+                    <button type="button" class="btn btn-primary registerBtn2">댓글 추가하기</button>
+                    <button type="button" class="btn btn-primary testBtn4">댓글 추가하기4</button>
                 </div>
             </div>
         </div>
@@ -219,6 +221,31 @@
     document.querySelector(".addReplyBtn2").addEventListener("click", function (e) {
         console.log("댓글 테스트2")
         registerModal.show()
+    }, false)
+
+    document.querySelector(".testBtn4").addEventListener("click", function (e) {
+
+        console.log("댓글 버튼 동작하니?")
+        // registerModal.hide()
+        const replyObj = {
+            bno: bno,
+            replyText: replyText.value,
+            replyer: replyer.value
+        }
+        // reply.js , addReply 이용하기.
+        addReply(replyObj).then(result => {
+            // 댓글 쓰기 성공 후 처리
+            alert(result.rno + "번 댓글 작성 성공: ")
+            // 모달 창 닫기
+            registerModal.hide()
+            // 기존 입력폼의 값 비우기
+            replyText.value = ""
+            replyer.value = ""
+            // 마지막 댓글 페이지 이동
+            printReplies(1, 10, true)
+        }).catch(e => {
+            alert("댓글 작성 실패")
+        })
     }, false)
 
     // 모달 댓글 폼 표시하기=====================================================
@@ -366,8 +393,11 @@
     // 댓글 목록에서 하나 댓글 선택시, 이벤트 처리
     // 모달 댓글 수정폼 표시하기=====================================================
 
+
+
     // 댓글 작성 이벤트 처리===============================================
-    document.querySelector(".registerBtn").addEventListener("click", function (e) {
+    document.querySelector(".registerBtn2").addEventListener("click", function (e) {
+        console.log("댓글 버튼 동작하니?")
         // registerModal.hide()
         const replyObj = {
             bno: bno,

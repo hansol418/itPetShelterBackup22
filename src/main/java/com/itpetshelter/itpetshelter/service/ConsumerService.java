@@ -14,14 +14,17 @@ public interface ConsumerService {
     }
     void join(ConsumerJoinDTO consumerJoinDTO) throws CidExistException;
 
-    default Consumer dtoToEntity(ConsumerJoinDTO memberJoinDTO) {
+    //회원 수정 재사용. join
+    void update(ConsumerJoinDTO consumerJoinDTO) throws CidExistException;
+
+    default Consumer dtoToEntity(ConsumerJoinDTO consumerJoinDTO) {
 
         Consumer consumer = Consumer.builder()
-                .Cid(memberJoinDTO.getCid())
-                .Cpw(memberJoinDTO.getCpw())
-                .email(memberJoinDTO.getEmail())
-                .uuid(memberJoinDTO.getUuid())
-                .fileName(memberJoinDTO.getFileName())
+                .Cid(consumerJoinDTO.getCid())
+                .Cpw(consumerJoinDTO.getCpw())
+                .email(consumerJoinDTO.getEmail())
+                .uuid(consumerJoinDTO.getUuid())
+                .fileName(consumerJoinDTO.getFileName())
                 .build();
 
 

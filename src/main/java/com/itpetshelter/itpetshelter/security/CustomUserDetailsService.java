@@ -54,12 +54,24 @@ public class CustomUserDetailsService implements UserDetailsService {
         // 로그인 한 유저명으로, 디비에서 검색을함.
         Optional<Consumer> result = consumerRepository.getWithRoles(username);
 
+
+
         if(result.isEmpty()){
-            //예외 처리.
-            throw new UsernameNotFoundException("유저가 존재하지 않습니다");
+
+
+            //Manager 하나 더 추가.
+        Optional<Consumer> result2 = consumerRepository.getWithRoles(username);
+
+
+            if(result2.isEmpty()){
+                //예외 처리.
+                throw new UsernameNotFoundException("유저가 존재하지 않습니다");
+            }
         }
         // 디비에 해당 유저가 있다면, 이어서 로그인 처리하기.
         Consumer consumer = result.get();
+        // 디비에서 Manager  가져오기
+//        Consumer consumer = result.get();
 
         // entity -> dto(UserDetails 타입), MemberSecurityDTO
         // 권한 관련 커스텀 마이징 하기 어려워서 -> 기존 A a = new A();
@@ -71,6 +83,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 //                .social(false)
 //                .
 //                .build();
+        // consumer 로
+        // 1) ConsumerSecurityDTO, 매니저 정보도 받을 수 있게 추가.
+        // 2) 분기문, ConsumerSecurityDTO 처럼, 매니저 엔티티가 받을 수 있게.
         ConsumerSecurityDTO consumerSecurityDTO = new ConsumerSecurityDTO(
                 consumer.getCid(),
                 consumer.getCpw(),
@@ -79,7 +94,6 @@ public class CustomUserDetailsService implements UserDetailsService {
            false,
                 consumer.getUuid(),
                 consumer.getFileName(),
-                consumer.getProfileImageServer(),
                 consumer.getRoleSet().stream().map(
                    memberRole -> new SimpleGrantedAuthority("ROLE_"+ memberRole.name())
            ).collect(Collectors.toList())

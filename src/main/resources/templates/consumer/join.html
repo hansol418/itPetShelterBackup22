@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+<html lang="ko"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/base.html}">
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/base.html}"
+>
 
 
 <head>
@@ -55,7 +56,7 @@
 
                         <div class="my-4">
                             <div class="float-end">
-                                <button type="submit" class="btn btn-primary" onclick="submitForm()">회원가입</button>
+                                <button type="button" class="btn btn-primary" onclick="submitForm()">회원가입</button>
                                 <button type="reset" class="btn btn-secondary">초기화</button>
                             </div>
                         </div>
@@ -106,7 +107,7 @@
     const error = [[${error}]]
 
     if(error && error === 'Cid'){
-        alert("동일한 MID를 가진 계정이 존재합니다.")
+        alert("동일한 CID를 가진 계정이 존재합니다.")
     }
 
     // 회원 가입시 프로필 이미지 , 모달창, 미리보기 화면, 엑스 표시, 엑스 클릭시 이벤트 처리
@@ -220,6 +221,7 @@
             .then(response => {
                 alert('회원가입이 완료되었습니다!');
                 console.log(response.data);
+                self.location = "/consumer/login"
             })
             .catch(error => {
                 alert('회원가입 중 오류가 발생했습니다.');

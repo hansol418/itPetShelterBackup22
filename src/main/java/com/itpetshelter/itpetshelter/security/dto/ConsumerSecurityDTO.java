@@ -34,7 +34,6 @@ public class ConsumerSecurityDTO extends User {
             String username,String password,String email,
             boolean del, boolean social,
             String uuid, String fileName,
-            String profileImageServer,
             //GrantedAuthority 를 상속한 클래스는 아무나 올수 있다. 타입으로
             Collection<? extends GrantedAuthority> authorities
     ){
