@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/base.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>동물 페이지</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        /*.container {*/
+        /*    max-width: 800px;*/
+        /*    margin: 20px auto;*/
+        /*    background-color: #fff;*/
+        /*    padding: 20px;*/
+        /*    border-radius: 8px;*/
+        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+        /*}*/
+
+        .animalCard {
+            max-width: 450px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .animal-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .animal-info img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        table td, table th {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="animalCard">
+            <div class="animal-info">
+                <img src="/assets/img/dogandcat.jpg" alt="강아지 사진">
+                <table>
+                    <tr>
+                        <td>품종</td>
+                        <td>골든 리트리버</td>
+                        <td>이름</td>
+                        <td>뽀삐</td>
+                    </tr>
+                    <tr>
+                        <td>나이</td>
+                        <td>3살</td>
+                        <td>성별</td>
+                        <td>수컷</td>
+                    </tr>
+                    <tr>
+                        <td>질병유무</td>
+                        <td>N</td>
+                        <td>중성화</td>
+                        <td>Y</td>
+                    </tr>
+                    <tr>
+                        <td>보호소 위치</td>
+                        <td>부산</td>
+                        <td>보호소 이름</td>
+                        <td>부산보호센터</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/base.html}"
+      >
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation Success</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>예약 성공!</h1>
+    <a th:href="@{/reservations/new}">Create another reservation</a>
+</div>
+</body>
+</html>

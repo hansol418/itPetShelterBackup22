@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="www.thymeleaf.org"
+      layout:decorate="~{layout/base.html}"
+>
+<head>
+    <style>
+        /* Google Fonts에서 Bangers 폰트를 불러오기 */
+        @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+    </style>
+    <link rel="stylesheet" href="/css/board.css">
+
+</head>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <!--    NavBar 가져와서 적용해보기-->
+        <div class="col">
+            <nav class="navbar navbar-expand-lg " style="background-color: #FFB6C1;">
+                <!--      <nav class="navbar bg-primary navbar-expand-lg bg-body-tertiary bg-primary"  data-bs-theme="" >-->
+                <!--      <nav class="navbar bg-primary" data-bs-theme="dark">-->
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/board/list" style="font-family: 'Jua', sans-serif; font-weight: bold; letter-spacing: 0.5px;">목록가기</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarTogglerDemo02"
+                            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/board/register" style="font-family: 'Jua', sans-serif; font-weight: bold; letter-spacing: 0.5px;">글작성</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row content">
+        <div class="col">
+            <!--      부트 스트랩 5.3 Card 컴포넌트 Header and Footer 의 샘플 가져오기-->
+            <div class="card">
+                <div class="card-header">
+                    글수정폼
+                </div>
+                <div class="card-body">
+                    <form method="post" th:action="@{board/update}" id="f1">
+                        <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
+                        <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                           <input type="hidden" name="bno" th:value="${boardDTO.bno}">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">제목</label>
+                            <input type="text" name="title" class="form-control" id="title" placeholder="제목을 입력해주세요."
+                            th:value="${boardDTO.title}" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">내용</label>
+                            <textarea  type="text" placeholder="내용을 입력해주세요." name="content" rows="5" class="form-control col-sm-5" id="content">[[${boardDTO.content}]]</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="writer" class="form-label">작성자</label>
+                            <input type="text" name="writer" class="form-control" id="writer" placeholder="작성자를 입력해주세요."
+                                   th:value="${boardDTO.writer}" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="regDate" class="form-label">등록시간</label>
+                            <input type="text" name="regDate" class="form-control" id="regDate"
+                                   th:value="${#temporals.format(boardDTO.regDate, 'yyyy-MM-dd HH:mm:ss')}" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="modDate" class="form-label">수정시간</label>
+                            <input type="text" name="modDate" class="form-control" id="modDate"
+                                   th:value="${#temporals.format(boardDTO.modDate, 'yyyy-MM-dd HH:mm:ss')}" disabled>
+                        </div>
+
+                        <div class="mb-3" th:with="link = ${pageRequestDTO.getLink()}">
+
+                            <button type="button" class="btn btn-primary updateBtn">수정하기</button>
+
+
+                                <button type="button" class="btn btn-warning deleteBtn">삭제하기</button>
+
+                            <a th:href="|@{/board/list}?${link}|">
+                            <button type="button" class="btn btn-danger listBtn">목록가기</button>
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--끝 나는 부분 layout:fragment="content"-->
+
+<!--자바스크립트 추가하는 영역-->
+<script layout:fragment="javascript" th:inline="javascript">
+    //글쓰기 후, 작성된 게시글 번호를 출력하기, 경고창으로
+    // 모달창으로 변경해보기.
+    const result = [[${result}]]
+    if(result) {
+        alert("작성된 게시글 번호 : " + result +"번")
+    }
+
+    // 글쓰기 폼에서 에러가 발생해서, 서버로 부터, 키: errors에
+    // 정보가 담겨져 있음.
+ const errors = [[${errors}]]
+ console.log("errors : " + errors)
+ let errorMsg =''
+ if(errors) {
+     for(let i = 0; i < errors.length; i++){
+         errorMsg += `${errors[i].field} 는 ${errors[i].code}\n`
+     }
+     alert(errorMsg)
+ }
+ // 수정폼 요소 가져오기
+ const formObj = document.querySelector("#f1")
+    // 페이징 조건, 검색 , 필터 조건
+    const link = [[${pageRequestDTO.getLink()}]]
+    //페이징 조건 만
+    const link2 = [[${pageRequestDTO.getLink2()}]]
+ // 글 수정 로직 이벤트 처리
+    document.querySelector(".updateBtn").addEventListener("click",function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+
+
+        formObj.action = `/board/update`
+        formObj.method = 'post'
+        formObj.submit()
+
+    },false)
+
+    // 글 삭제 로직 이벤트 처리
+    document.querySelector(".deleteBtn").addEventListener("click",function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.action = `/board/delete`
+        formObj.method = 'post'
+        formObj.submit()
+
+    },false)
+
+</script>
+
+</body>
+</html>
